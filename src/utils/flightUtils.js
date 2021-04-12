@@ -12,4 +12,8 @@ const getFlightSuccess = (flight) => {
   return message;
 };
 
-export { getFlightSuccess };
+const OldestLaunchDate = (a, b) => a.launch_date_unix - b.launch_date_unix;
+
+const NewestLaunchDate = (a, b) => b.launch_date_unix - a.launch_date_unix;
+
+export { getFlightSuccess, OldestLaunchDate, NewestLaunchDate };

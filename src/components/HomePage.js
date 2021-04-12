@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "reactstrap";
 import { FlightList } from "./FlightList";
 import { getFlights } from "../redux/thunks";
+import { flightFilterSelector } from "../redux/selectors";
 
 import { NavBar } from "./NavBar";
 
@@ -10,7 +11,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   const loading = useSelector((state) => state.flights.loading);
-  const flights = useSelector((state) => state.flights.data);
+  const flights = useSelector((state) => flightFilterSelector(state));
 
   useEffect(() => {
     if (flights.length === 0) {

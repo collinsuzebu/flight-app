@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Collapse,
   Navbar,
@@ -14,9 +15,29 @@ import {
   InputGroupText,
   Label,
 } from "reactstrap";
+import {
+  filterByLaunchDate,
+  filterByLaunchStatus,
+  filterByUpcoming,
+  removeFilter,
+} from "../redux/slices";
+
+const FILTER_TYPES = {
+  newest: "launch_date_unix",
+  oldest: "launch_date_unix",
+  success: "launch_success",
+  failed: "launch_success",
+  upcoming: "upcoming",
+};
 
 export function NavBar() {
+  const dispatch = useDispatch();
+
   const [isOpen, setIsOpen] = useState(false);
+
+  const [currentFilter, setCurrentFilter] = useState("");
+
+  const [clearFilter, setClearFilter] = useState(false);
 
   const [filterState, setFilterState] = useState({
     // lauchDate
@@ -31,9 +52,38 @@ export function NavBar() {
     upcoming: false,
   });
 
+  useEffect(() => {
+    if (!clearFilter) {
+      if (currentFilter === "newest" || currentFilter === "oldest") {
+        dispatch(filterByLaunchDate({ launch_date_unix: currentFilter }));
+      }
+
+      if (currentFilter === "success" || currentFilter === "failed") {
+        const isSuccess = currentFilter === "success";
+        dispatch(filterByLaunchStatus({ launch_success: isSuccess }));
+      }
+
+      if (currentFilter === "upcoming") {
+        const isUpcoming = currentFilter === "upcoming";
+        dispatch(filterByUpcoming({ upcoming: isUpcoming }));
+      }
+    }
+  }, [filterState]);
+
+  useEffect(() => {
+    if (clearFilter) {
+      dispatch(removeFilter({ filterName: FILTER_TYPES[currentFilter] }));
+      setClearFilter(false);
+    }
+  }, [clearFilter]);
+
   const toggle = () => setIsOpen(!isOpen);
 
   const activateFilter = (e) => {
+    if (!e.target.checked) {
+      setClearFilter(true);
+    }
+    setCurrentFilter(e.target.name);
     setFilterState((prevState) => ({
       ...prevState,
       [e.target.name]: !prevState[e.target.name],
