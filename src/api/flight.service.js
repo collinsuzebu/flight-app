@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "https://api.spacexdata.com/v3/launches";
 
 const fetchFlights = () => fetch(API_URL).then((res) => res.json());
 export { fetchFlights };
