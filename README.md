@@ -21,5 +21,6 @@ npm test -- --watchAll=false
 
 ## Deploy Heroku
 
-1. heroku create flight-app-collins
-2. heroku config:set REACT_APP_API_URL=https://api.spacexdata.com/v3/launches
+1. `heroku create flight-app-collins`
+2. `heroku create flight-app-collins --buildpack mars/create-react-app`
+3. `git push heroku main`
