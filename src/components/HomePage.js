@@ -1,28 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Spinner } from "reactstrap";
 import { FlightList } from "./FlightList";
+import { getFlights } from "../redux/thunks";
 
 import { NavBar } from "./NavBar";
 
 const HomePage = () => {
-  const loading = false;
+  const dispatch = useDispatch();
 
-  const flights = [
-    {
-      flight_number: 1,
-      details: "details 1",
-      mission_name: "mission_name 1",
-      launch_success: true,
-      launch_year: 2020,
-    },
-    {
-      flight_number: 2,
-      details: "details 2",
-      mission_name: "mission_name 2",
-      launch_success: false,
-      launch_year: 2021,
-    },
-  ];
+  const loading = useSelector((state) => state.flights.loading);
+  const flights = useSelector((state) => state.flights.data);
+
+  useEffect(() => {
+    if (flights.length === 0) {
+      dispatch(getFlights());
+    }
+  }, []);
 
   return (
     <>

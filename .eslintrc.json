@@ -17,6 +17,10 @@
     "quotes": [2, "double", { "avoidEscape": true }],
     "jsx-quotes": [2, "prefer-double"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "no-param-reassign": [
+      "error",
+      { "props": true, "ignorePropertyModificationsForRegex": ["^state"] }
+    ]
   }
 }
